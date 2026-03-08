@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/useUserStore';
 import { supabase } from '../services/supabase';
-import { LogOut, Package, MapPin, Heart, User as UserIcon, Settings, BarChart } from 'lucide-react';
-import { AdminOverview, ProductManagement, OrdersManagement } from '../components/admin/AdminPanels';
+import { LogOut, Package, MapPin, Heart, User as UserIcon, Settings, BarChart, Users, Tag, Truck, ClipboardList } from 'lucide-react';
+import { AdminOverview, ProductManagement, OrdersManagement, AdminCustomers, AdminMarketing, AdminLogistics, AdminSettings } from '../components/admin/AdminPanels';
 import './Account.css';
 
 export default function Account() {
@@ -67,7 +67,19 @@ export default function Account() {
                                     <Package size={20} /> Produtos
                                 </button>
                                 <button className={`account-nav-item ${activeTab === 'admin-orders' ? 'active' : ''}`} onClick={() => setActiveTab('admin-orders')}>
-                                    <Settings size={20} /> Pedidos da Loja
+                                    <ClipboardList size={20} /> Pedidos da Loja
+                                </button>
+                                <button className={`account-nav-item ${activeTab === 'admin-customers' ? 'active' : ''}`} onClick={() => setActiveTab('admin-customers')}>
+                                    <Users size={20} /> Clientes & CRM
+                                </button>
+                                <button className={`account-nav-item ${activeTab === 'admin-marketing' ? 'active' : ''}`} onClick={() => setActiveTab('admin-marketing')}>
+                                    <Tag size={20} /> Marketing
+                                </button>
+                                <button className={`account-nav-item ${activeTab === 'admin-logistics' ? 'active' : ''}`} onClick={() => setActiveTab('admin-logistics')}>
+                                    <Truck size={20} /> Logística
+                                </button>
+                                <button className={`account-nav-item ${activeTab === 'admin-settings' ? 'active' : ''}`} onClick={() => setActiveTab('admin-settings')}>
+                                    <Settings size={20} /> Configurações
                                 </button>
                             </>
                         )}
@@ -129,6 +141,10 @@ export default function Account() {
                     {isAdmin && activeTab === 'admin-overview' && <AdminOverview />}
                     {isAdmin && activeTab === 'admin-products' && <ProductManagement />}
                     {isAdmin && activeTab === 'admin-orders' && <OrdersManagement />}
+                    {isAdmin && activeTab === 'admin-customers' && <AdminCustomers />}
+                    {isAdmin && activeTab === 'admin-marketing' && <AdminMarketing />}
+                    {isAdmin && activeTab === 'admin-logistics' && <AdminLogistics />}
+                    {isAdmin && activeTab === 'admin-settings' && <AdminSettings />}
 
                 </main>
             </div>
