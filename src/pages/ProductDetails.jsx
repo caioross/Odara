@@ -37,7 +37,7 @@ export default function ProductDetails() {
 
     const handleAddToCart = () => {
         addToCart(product, selectedFinish);
-        alert(`Adicionado ao carrinho: ${product.name} - Acabamento: ${selectedFinish} `);
+        alert(`Adicionado ao carrinho: ${product.name} - Acabamento: ${selectedFinish}`);
     };
 
     return (

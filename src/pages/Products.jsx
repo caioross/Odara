@@ -13,9 +13,20 @@ export default function Products() {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const categoryQuery = params.get('categoria');
+        const ambienteQuery = params.get('ambiente');
 
-        // Simplistic handling for Demo purposes mapping generic param to specific
-        if (categoryQuery) {
+        if (ambienteQuery) {
+            if (ambienteQuery === 'sala-estar') {
+                setFilteredProducts(mockProducts.filter(p => ['sofa', 'poltrona', 'rack', 'aparador'].includes(p.category)));
+                setActiveCategory('todos');
+            } else if (ambienteQuery === 'sala-jantar') {
+                setFilteredProducts(mockProducts.filter(p => ['mesa-jantar', 'cadeira', 'buffet'].includes(p.category)));
+                setActiveCategory('todos');
+            } else if (ambienteQuery === 'varanda') {
+                setFilteredProducts(mockProducts.filter(p => ['poltrona', 'banqueta', 'banco'].includes(p.category)));
+                setActiveCategory('todos');
+            }
+        } else if (categoryQuery) {
             if (categoryQuery === 'assentos') {
                 setFilteredProducts(mockProducts.filter(p => ['sofa', 'cadeira', 'poltrona', 'banqueta', 'banco'].includes(p.category)));
                 setActiveCategory('todos');
@@ -44,7 +55,7 @@ export default function Products() {
         <div className="products-page page animate-fade-in section-padding">
             <div className="container">
                 <header className="products-header text-center">
-                    <h1 className="page-title">Nosso Acervo</h1>
+                    <h1 className="page-title">Nossa Curadoria</h1>
                     <p className="page-subtitle">A excelência do design autoral brasileiro em cada detalhe.</p>
                 </header>
 

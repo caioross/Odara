@@ -6,6 +6,7 @@ import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Mostras from './pages/Mostras';
 import BrasilCriativo from './pages/BrasilCriativo';
+import DnaOdara from './pages/DnaOdara';
 import CartDrawer from './components/CartDrawer';
 import { useState } from 'react';
 

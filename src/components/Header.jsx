@@ -50,19 +50,17 @@ export default function Header({ onOpenCart }) {
                                 <div className="mega-menu" onMouseLeave={() => setHoveredCategory('destaque')}>
                                     <div className="mega-menu-content container">
                                         <div className="mega-column">
-                                            <h3>Assentos</h3>
-                                            <Link to="/produtos?categoria=sofa" onMouseEnter={() => setHoveredCategory('sofa')}>Sofás</Link>
-                                            <Link to="/produtos?categoria=cadeira" onMouseEnter={() => setHoveredCategory('cadeira')}>Cadeiras</Link>
-                                            <Link to="/produtos?categoria=poltrona" onMouseEnter={() => setHoveredCategory('poltrona')}>Poltronas</Link>
-                                            <Link to="/produtos?categoria=banqueta" onMouseEnter={() => setHoveredCategory('banqueta')}>Banquetas</Link>
-                                            <Link to="/produtos?categoria=banco" onMouseEnter={() => setHoveredCategory('banco')}>Bancos</Link>
+                                            <h3>Sala de Estar</h3>
+                                            <Link to="/produtos?ambiente=sala-estar" onMouseEnter={() => setHoveredCategory('sofa')}>Sofás</Link>
+                                            <Link to="/produtos?ambiente=sala-estar" onMouseEnter={() => setHoveredCategory('poltrona')}>Poltronas</Link>
+                                            <Link to="/produtos?ambiente=sala-estar" onMouseEnter={() => setHoveredCategory('rack')}>Racks</Link>
+                                            <Link to="/produtos?ambiente=sala-estar" onMouseEnter={() => setHoveredCategory('aparador')}>Aparadores</Link>
                                         </div>
                                         <div className="mega-column">
-                                            <h3>Superfícies</h3>
-                                            <Link to="/produtos?categoria=mesa-jantar" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas de Jantar</Link>
-                                            <Link to="/produtos?categoria=mesa-centro" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas de Centro</Link>
-                                            <Link to="/produtos?categoria=mesa-lateral" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas Laterais</Link>
-                                            <Link to="/produtos?categoria=escrivaninha" onMouseEnter={() => setHoveredCategory('mesa')}>Escrivaninhas</Link>
+                                            <h3>Sala de Jantar</h3>
+                                            <Link to="/produtos?ambiente=sala-jantar" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas de Jantar</Link>
+                                            <Link to="/produtos?ambiente=sala-jantar" onMouseEnter={() => setHoveredCategory('cadeira')}>Cadeiras</Link>
+                                            <Link to="/produtos?ambiente=sala-jantar" onMouseEnter={() => setHoveredCategory('buffet')}>Buffets</Link>
                                         </div>
                                         <div className="mega-column">
                                             <h3>Armazenamento</h3>
@@ -84,6 +82,9 @@ export default function Header({ onOpenCart }) {
                                     </div>
                                 </div>
                             )}
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/dna-odara" className="nav-link">DNA Odara</Link>
                         </li>
                         <li className="nav-item">
                             <Link to="/mostras" className="nav-link">Mostras</Link>
