@@ -2,32 +2,39 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Box, Download } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { mockProducts } from '../data/mockProducts';
-import { useCart, Product } from '../context/CartContext';
+import { useProduct } from '../hooks/useProducts';
+import { useCartStore } from '../store/useCartStore';
+import PriceTag from '../components/PriceTag';
 import './ProductDetails.css';
 
 export default function ProductDetails() {
     const { id } = useParams();
-    const { addToCart } = useCart();
-    const [product, setProduct] = useState<Product | null>(null);
+    const addToCart = useCartStore((state) => state.addToCart);
+    const { data: product, isLoading } = useProduct(id);
     const [activeImage, setActiveImage] = useState('');
     const [selectedFinish, setSelectedFinish] = useState('');
 
     useEffect(() => {
-        const foundProduct = mockProducts.find(p => p.id === parseInt(id || '0', 10));
-        if (foundProduct) {
-            setProduct(foundProduct);
-            setActiveImage(foundProduct.image);
-            if (foundProduct.availableFinishes.length > 0) {
-                setSelectedFinish(foundProduct.availableFinishes[0]);
+        if (product) {
+            setActiveImage(product.image);
+            if (product.availableFinishes.length > 0) {
+                setSelectedFinish(product.availableFinishes[0]);
             }
         }
-    }, [id]);
+    }, [product]);
+
+    if (isLoading) {
+        return (
+            <div className="page section-padding text-center">
+                <h2>Carregando detalhes exclusivos...</h2>
+            </div>
+        );
+    }
 
     if (!product) {
         return (
             <div className="page section-padding text-center">
-                <h2>Carregando produto ou não encontrado...</h2>
+                <h2>Produto não encontrado.</h2>
                 <Link to="/produtos" className="btn-link mt-4">Voltar para o Catálogo</Link>
             </div>
         );
@@ -81,7 +88,11 @@ export default function ProductDetails() {
                         <div className="product-header">
                             <span className="collection-tag">Coleção {product.collection}</span>
                             <h1 className="product-title">{product.name}</h1>
-                            <p className="product-price">{product.price}</p>
+                            <PriceTag
+                                price={product.price}
+                                isConsultationOnly={typeof product.price === 'string' && product.price.toLowerCase().includes('consulta')}
+                                className="mt-2"
+                            />
                         </div>
 
                         <div className="product-description">

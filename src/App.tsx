@@ -7,7 +7,9 @@ import ProductDetails from './pages/ProductDetails';
 import Mostras from './pages/Mostras';
 import BrasilCriativo from './pages/BrasilCriativo';
 import DnaOdara from './pages/DnaOdara';
+import Account from './pages/Account';
 import CartDrawer from './components/CartDrawer';
+import AuthModal from './components/AuthModal';
 import { useState } from 'react';
 
 function App() {
@@ -25,12 +27,14 @@ function App() {
           <Route path="/mostras" element={<Mostras />} />
           <Route path="/brasil-criativo" element={<BrasilCriativo />} />
           <Route path="/dna-odara" element={<DnaOdara />} />
+          <Route path="/conta" element={<Account />} />
         </Routes>
       </main>
 
       <Footer />
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <AuthModal />
     </div>
   );
 }

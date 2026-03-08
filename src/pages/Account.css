@@ -1,0 +1,123 @@
+.account-page {
+    min-height: 60vh;
+}
+
+.account-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    font-size: 1.2rem;
+    color: var(--color-verde-medio);
+}
+
+.account-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.account-header h1 {
+    font-family: var(--font-heading);
+    color: var(--color-verde-intenso);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.account-header p {
+    color: var(--color-verde-medio);
+    font-size: 1.1rem;
+}
+
+.account-dashboard {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+}
+
+@media (max-width: 768px) {
+    .account-dashboard {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.account-sidebar {
+    background-color: var(--color-creme);
+    padding: 2rem 1.5rem;
+    border-radius: 8px;
+    height: fit-content;
+}
+
+.account-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.account-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-verde-intenso);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.account-nav-item:hover,
+.account-nav-item.active {
+    background-color: rgba(6, 48, 48, 0.05);
+    font-weight: 600;
+}
+
+.logout-btn {
+    margin-top: 1rem;
+    color: #dc3545;
+}
+
+.logout-btn:hover {
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.account-content {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.account-section h2 {
+    font-family: var(--font-heading);
+    color: var(--color-verde-intenso);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 0.8rem;
+}
+
+.info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-verde-medio);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+}
+
+.info-group p {
+    font-size: 1.1rem;
+    color: var(--color-verde-intenso);
+    font-weight: 500;
+}

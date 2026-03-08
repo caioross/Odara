@@ -1,15 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Menu, X, ChevronDown } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingBag, Menu, X, ChevronDown, User, Search } from 'lucide-react';
+import { useUserStore } from '../store/useUserStore';
+import { useCartStore } from '../store/useCartStore';
+import { useProductSearch } from '../hooks/useProducts';
 import './Header.css';
 
-export default function Header({ onOpenCart }) {
+interface HeaderProps {
+    onOpenCart: () => void;
+}
+
+export default function Header({ onOpenCart }: HeaderProps) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState('destaque');
-    const { totalItems } = useCart();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const { data: searchResults = [], isLoading: isSearchLoading } = useProductSearch(searchQuery);
+
+    const totalItems = useCartStore((state) => state.totalItems);
+    const { user, openAuthModal } = useUserStore();
+    const navigate = useNavigate();
+
+    const handleUserClick = () => {
+        if (user) {
+            navigate('/conta');
+        } else {
+            openAuthModal();
+        }
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -100,12 +120,60 @@ export default function Header({ onOpenCart }) {
 
                 {/* Actions */}
                 <div className="header-actions">
+                    <button className="search-btn" onClick={() => setIsSearchOpen(true)} aria-label="Pesquisar" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--color-verde-intenso)' }}>
+                        <Search size={22} />
+                    </button>
+                    <button className="user-btn" onClick={handleUserClick} aria-label="Minha Conta" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--color-verde-intenso)' }}>
+                        <User size={24} />
+                    </button>
                     <button className="cart-btn" onClick={onOpenCart} aria-label="Abrir carrinho">
                         <ShoppingBag size={24} />
                         {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
                     </button>
                 </div>
             </div>
+
+            {/* Omnibar Search Overlay */}
+            {isSearchOpen && (
+                <div className="search-overlay" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', backgroundColor: 'var(--color-creme)', padding: '2rem 0', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', zIndex: 100 }}>
+                    <div className="container" style={{ position: 'relative' }}>
+                        <input
+                            type="text"
+                            placeholder="Buscar mobílias, designers, coleções..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            autoFocus
+                            style={{ width: '100%', padding: '15px 20px', fontSize: '1.2rem', border: '1px solid var(--color-verde-medio)', borderRadius: '4px', backgroundColor: 'transparent', color: 'var(--color-verde-intenso)' }}
+                        />
+                        <button onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} style={{ position: 'absolute', right: '35px', top: '18px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-verde-intenso)' }}>
+                            <X size={24} />
+                        </button>
+
+                        {searchQuery.length > 2 && (
+                            <div className="search-results" style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
+                                {isSearchLoading ? (
+                                    <p style={{ gridColumn: '1 / -1', color: 'var(--color-verde-medio)' }}>Buscando...</p>
+                                ) : searchResults.length > 0 ? (
+                                    searchResults.slice(0, 4).map(product => (
+                                        <Link
+                                            key={product.id}
+                                            to={`/produtos/${product.id}`}
+                                            onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                            <img src={product.image} alt={product.name} style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '4px', marginBottom: '10px' }} />
+                                            <h4 style={{ fontSize: '1rem', color: 'var(--color-verde-intenso)', marginBottom: '5px' }}>{product.name}</h4>
+                                            <p style={{ fontSize: '0.85rem', color: 'var(--color-verde-medio)' }}>Coleção {product.collection}</p>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <p style={{ gridColumn: '1 / -1', color: 'var(--color-verde-medio)' }}>Nenhum resultado encontrado para "{searchQuery}".</p>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 }

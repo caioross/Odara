@@ -1,51 +1,60 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { mockProducts, categories } from '../data/mockProducts';
+import { categories } from '../data/mockProducts';
+import { useProducts } from '../hooks/useProducts';
+import PriceTag from '../components/PriceTag';
+import { Product } from '../context/CartContext';
+import './Products.css';
 import './Products.css';
 
 export default function Products() {
+    const { data: products = [], isLoading } = useProducts();
     const [activeCategory, setActiveCategory] = useState('todos');
-    const [filteredProducts, setFilteredProducts] = useState(mockProducts);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const location = useLocation();
     const navigate = useNavigate();
 
     // Handle URL query params for initial category selection
     useEffect(() => {
+        if (!products.length) return;
         const params = new URLSearchParams(location.search);
         const categoryQuery = params.get('categoria');
         const ambienteQuery = params.get('ambiente');
 
+        let result = products;
+
         if (ambienteQuery) {
             if (ambienteQuery === 'sala-estar') {
-                setFilteredProducts(mockProducts.filter(p => ['sofa', 'poltrona', 'rack', 'aparador'].includes(p.category)));
+                result = products.filter(p => ['sofa', 'poltrona', 'rack', 'aparador'].includes(p.category));
                 setActiveCategory('todos');
             } else if (ambienteQuery === 'sala-jantar') {
-                setFilteredProducts(mockProducts.filter(p => ['mesa-jantar', 'cadeira', 'buffet'].includes(p.category)));
+                result = products.filter(p => ['mesa-jantar', 'cadeira', 'buffet'].includes(p.category));
                 setActiveCategory('todos');
             } else if (ambienteQuery === 'varanda') {
-                setFilteredProducts(mockProducts.filter(p => ['poltrona', 'banqueta', 'banco'].includes(p.category)));
+                result = products.filter(p => ['poltrona', 'banqueta', 'banco'].includes(p.category));
                 setActiveCategory('todos');
             }
         } else if (categoryQuery) {
             if (categoryQuery === 'assentos') {
-                setFilteredProducts(mockProducts.filter(p => ['sofa', 'cadeira', 'poltrona', 'banqueta', 'banco'].includes(p.category)));
+                result = products.filter(p => ['sofa', 'cadeira', 'poltrona', 'banqueta', 'banco'].includes(p.category));
                 setActiveCategory('todos');
             } else if (categoryQuery === 'superficies') {
-                setFilteredProducts(mockProducts.filter(p => ['mesa-jantar', 'mesa-lateral', 'mesa-centro'].includes(p.category)));
+                result = products.filter(p => ['mesa-jantar', 'mesa-lateral', 'mesa-centro'].includes(p.category));
                 setActiveCategory('todos');
             } else if (categoryQuery === 'armazenamento') {
-                setFilteredProducts(mockProducts.filter(p => ['rack', 'aparador', 'buffet'].includes(p.category)));
+                result = products.filter(p => ['rack', 'aparador', 'buffet'].includes(p.category));
                 setActiveCategory('todos');
             } else {
                 setActiveCategory(categoryQuery);
-                setFilteredProducts(mockProducts.filter(p => p.category === categoryQuery));
+                result = products.filter(p => p.category === categoryQuery);
             }
         } else {
             setActiveCategory('todos');
-            setFilteredProducts(mockProducts);
         }
-    }, [location.search]);
+
+        setFilteredProducts(result);
+    }, [location.search, products]);
 
     const handleCategoryFilter = (categoryId: string) => {
         setActiveCategory(categoryId);
@@ -82,7 +91,11 @@ export default function Products() {
 
                 {/* Product Grid */}
                 <div className="product-grid mt-4">
-                    {filteredProducts.length > 0 ? (
+                    {isLoading ? (
+                        <div className="loading-products" style={{ textAlign: 'center', gridColumn: '1 / -1', padding: '3rem' }}>
+                            <p>Carregando curadoria exclusiva...</p>
+                        </div>
+                    ) : filteredProducts.length > 0 ? (
                         filteredProducts.map((product) => (
                             <Link to={`/produtos/${product.id}`} key={product.id} className="product-card">
                                 <div className="product-image-wrapper">
@@ -92,12 +105,15 @@ export default function Products() {
                                 </div>
                                 <div className="product-info">
                                     <h3>{product.name}</h3>
-                                    <p>{product.price}</p>
+                                    <PriceTag
+                                        price={product.price}
+                                        isConsultationOnly={typeof product.price === 'string' && product.price.toLowerCase().includes('consulta')}
+                                    />
                                 </div>
                             </Link>
                         ))
                     ) : (
-                        <div className="no-products text-center">
+                        <div className="no-products text-center" style={{ gridColumn: '1 / -1' }}>
                             <p>Nenhuma peça encontrada nesta categoria.</p>
                         </div>
                     )}
