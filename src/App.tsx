@@ -10,10 +10,33 @@ import DnaOdara from './pages/DnaOdara';
 import Account from './pages/Account';
 import CartDrawer from './components/CartDrawer';
 import AuthModal from './components/AuthModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from './services/supabase';
+import { useUserStore } from './store/useUserStore';
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const { setUser, setSession, setIsLoading } = useUserStore();
+
+  useEffect(() => {
+    // Initial session loading
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setSession, setUser, setIsLoading]);
 
   return (
     <div className="app">
