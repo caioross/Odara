@@ -6,13 +6,16 @@
     height: var(--header-height);
     background-color: transparent;
     z-index: 1000;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    color: var(--color-verde-intenso);
+    transition: all 0.3s ease;
+    color: var(--color-off-white);
+    /* Light text on transparent dark bg */
 }
 
 .header.scrolled {
     background-color: var(--color-off-white);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    color: var(--color-verde-intenso);
+    /* Dark text on white bg */
 }
 
 .header-container {
@@ -22,13 +25,26 @@
     height: 100%;
 }
 
+.logo {
+    text-decoration: none;
+}
+
 .logo h1 {
     font-family: var(--font-heading);
-    font-size: 28px;
+    font-size: 24px;
     letter-spacing: 2px;
     margin: 0;
     text-transform: uppercase;
     color: var(--color-terracota);
+    border: 1px solid var(--color-terracota);
+    padding: 6px 14px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.header.scrolled .logo h1 {
+    color: var(--color-verde-intenso);
+    border-color: var(--color-verde-intenso);
 }
 
 .nav {
@@ -66,6 +82,8 @@
     left: 0;
     width: 100%;
     background-color: var(--color-off-white);
+    color: var(--color-verde-intenso);
+    /* Explicitly set dark color to counteract header's light text */
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     padding: 40px 0;

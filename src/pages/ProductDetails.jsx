@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Box } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Box, Download } from 'lucide-react';
 import { mockProducts } from '../data/mockProducts';
+import { useCart } from '../context/CartContext';
 import './ProductDetails.css';
 
 export default function ProductDetails() {
     const { id } = useParams();
+    const { addToCart } = useCart();
     const [product, setProduct] = useState(null);
     const [activeImage, setActiveImage] = useState('');
     const [selectedFinish, setSelectedFinish] = useState('');
@@ -34,8 +36,8 @@ export default function ProductDetails() {
     const gallery = [product.image, product.hoverImage]; // Mock gallery
 
     const handleAddToCart = () => {
-        alert(`Adicionado ao carrinho: ${product.name} - Acabamento: ${selectedFinish}`);
-        // Here we would call a context/store action to update cart state
+        addToCart(product, selectedFinish);
+        alert(`Adicionado ao carrinho: ${product.name} - Acabamento: ${selectedFinish} `);
     };
 
     return (
@@ -59,11 +61,11 @@ export default function ProductDetails() {
                                 {gallery.map((img, idx) => (
                                     <button
                                         key={idx}
-                                        className={`thumbnail-btn ${activeImage === img ? 'active' : ''}`}
+                                        className={`thumbnail - btn ${activeImage === img ? 'active' : ''} `}
                                         onClick={() => setActiveImage(img)}
-                                        aria-label={`Ver imagem ${idx + 1}`}
+                                        aria-label={`Ver imagem ${idx + 1} `}
                                     >
-                                        <img src={img} alt={`${product.name} vista ${idx + 1}`} />
+                                        <img src={img} alt={`${product.name} vista ${idx + 1} `} />
                                     </button>
                                 ))}
                             </div>
@@ -93,7 +95,7 @@ export default function ProductDetails() {
                                     {product.availableFinishes.map((finish, idx) => (
                                         <button
                                             key={idx}
-                                            className={`finish-btn ${selectedFinish === finish ? 'active' : ''}`}
+                                            className={`finish - btn ${selectedFinish === finish ? 'active' : ''} `}
                                             onClick={() => setSelectedFinish(finish)}
                                         >
                                             {finish}
@@ -133,6 +135,10 @@ export default function ProductDetails() {
                                     <Box size={20} /> Ver Modelo 3D (3D Warehouse) <ExternalLink size={16} />
                                 </a>
                             )}
+                            {/* Added DWG mockup link since customer requested it */}
+                            <a href="#" onClick={(e) => { e.preventDefault(); alert('Download do arquivo DWG iniciado.'); }} className="external-btn mt-2">
+                                <Download size={20} /> Baixar Arquivo em DWG <ExternalLink size={16} />
+                            </a>
                         </div>
 
                     </div>

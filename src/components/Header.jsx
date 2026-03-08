@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Menu, X, ChevronDown } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import './Header.css';
 
 export default function Header({ onOpenCart }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+    const { totalItems } = useCart();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -38,9 +40,9 @@ export default function Header({ onOpenCart }) {
                             onMouseEnter={() => setIsMegaMenuOpen(true)}
                             onMouseLeave={() => setIsMegaMenuOpen(false)}
                         >
-                            <Link to="/produtos" className="nav-link">
+                            <div className="nav-link" style={{ cursor: 'pointer' }} onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}>
                                 Mobiliário <ChevronDown size={14} />
-                            </Link>
+                            </div>
 
                             {/* Mega Menu */}
                             {isMegaMenuOpen && (
@@ -92,7 +94,7 @@ export default function Header({ onOpenCart }) {
                 <div className="header-actions">
                     <button className="cart-btn" onClick={onOpenCart} aria-label="Abrir carrinho">
                         <ShoppingBag size={24} />
-                        <span className="cart-count">0</span>
+                        {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
                     </button>
                 </div>
             </div>
