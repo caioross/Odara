@@ -1,11 +1,16 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight } from 'lucide-react';
 import './Home.css';
 
 export default function Home() {
     return (
         <div className="home page animate-fade-in">
+            <Helmet>
+                <title>Odara | A Essência do Design Autoral Brasileiro</title>
+                <meta name="description" content="Mobiliário handcrafted com curadoria exclusiva. Luxo, brasilidade e formas orgânicas para ambientes sofisticados." />
+            </Helmet>
             {/* Hero Section */}
             <section className="hero">
                 <div className="hero-background">

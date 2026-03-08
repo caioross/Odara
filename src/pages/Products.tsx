@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { mockProducts, categories } from '../data/mockProducts';
 import './Products.css';
 
@@ -46,13 +47,17 @@ export default function Products() {
         }
     }, [location.search]);
 
-    const handleCategoryFilter = (categoryId) => {
+    const handleCategoryFilter = (categoryId: string) => {
         setActiveCategory(categoryId);
         navigate(categoryId === 'todos' ? '/produtos' : `/produtos?categoria=${categoryId}`);
     };
 
     return (
         <div className="products-page page animate-fade-in section-padding">
+            <Helmet>
+                <title>Nossa Curadoria | Mobiliário Odara</title>
+                <meta name="description" content="Explore nossa curadoria de mobiliário de luxo. Peças de design autoral brasileiro para salas de estar, jantar e varandas." />
+            </Helmet>
             <div className="container">
                 <header className="products-header text-center">
                     <h1 className="page-title">Nossa Curadoria</h1>

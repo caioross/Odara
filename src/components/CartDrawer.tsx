@@ -1,10 +1,9 @@
-import React from 'react';
-import { X, Trash2 } from 'lucide-react';
+import { X, Trash2, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './CartDrawer.css';
 
-export default function CartDrawer({ isOpen, onClose }) {
-    const { cartItems, removeFromCart } = useCart();
+export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+    const { cartItems, removeFromCart, updateQuantity, subtotal } = useCart();
 
     if (!isOpen) return null;
 
@@ -31,10 +30,17 @@ export default function CartDrawer({ isOpen, onClose }) {
                                     <img src={item.image} alt={item.name} className="item-image" />
                                     <div className="item-details">
                                         <h3>{item.name}</h3>
-                                        <p className="item-finish">{item.finish} {item.quantity > 1 ? `(x${item.quantity})` : ''}</p>
-                                        <div className="item-actions">
+                                        <p className="item-finish">{item.finish}</p>
+
+                                        <div className="item-quantity-controls mt-2">
+                                            <button onClick={() => updateQuantity(item.id, item.finish, -1)} aria-label="Diminuir quantidade"><Minus size={14} /></button>
+                                            <span>{item.quantity}</span>
+                                            <button onClick={() => updateQuantity(item.id, item.finish, 1)} aria-label="Aumentar quantidade"><Plus size={14} /></button>
+                                        </div>
+
+                                        <div className="item-actions mt-2">
                                             <span className="item-price">{item.price}</span>
-                                            <button className="remove-item" onClick={() => removeFromCart(item.id, item.finish)}><Trash2 size={16} /></button>
+                                            <button className="remove-item" onClick={() => removeFromCart(item.id, item.finish)} aria-label="Remover item"><Trash2 size={16} /></button>
                                         </div>
                                     </div>
                                 </div>
@@ -44,6 +50,14 @@ export default function CartDrawer({ isOpen, onClose }) {
                 </div>
 
                 <div className="cart-footer">
+                    {cartItems.length > 0 && (
+                        <div className="cart-subtotal mb-3">
+                            <span className="subtotal-label">Subtotal</span>
+                            <span className="subtotal-value">
+                                {subtotal > 0 ? `R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : 'Sob Consulta'}
+                            </span>
+                        </div>
+                    )}
                     <button className="btn btn-primary btn-full" onClick={() => alert('Orçamento solicitado!')}>
                         Solicitar Orçamento
                     </button>

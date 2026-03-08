@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Box, Download } from 'lucide-react';
+import { ArrowLeft, Box, Download } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { mockProducts } from '../data/mockProducts';
-import { useCart } from '../context/CartContext';
+import { useCart, Product } from '../context/CartContext';
 import './ProductDetails.css';
 
 export default function ProductDetails() {
     const { id } = useParams();
     const { addToCart } = useCart();
-    const [product, setProduct] = useState(null);
+    const [product, setProduct] = useState<Product | null>(null);
     const [activeImage, setActiveImage] = useState('');
     const [selectedFinish, setSelectedFinish] = useState('');
 
     useEffect(() => {
-        // Find product by id (in a real app, from API)
-        const foundProduct = mockProducts.find(p => p.id === parseInt(id));
+        const foundProduct = mockProducts.find(p => p.id === parseInt(id || '0', 10));
         if (foundProduct) {
             setProduct(foundProduct);
             setActiveImage(foundProduct.image);
@@ -42,6 +42,10 @@ export default function ProductDetails() {
 
     return (
         <div className="product-details-page page animate-fade-in section-padding">
+            <Helmet>
+                <title>{product.name} | Design Autoral Odara</title>
+                <meta name="description" content={`Conheça ${product.name}, uma peça exclusiva com design autoral brasileiro da coleção ${product.collection}.`} />
+            </Helmet>
             <div className="container">
 
                 <div className="breadcrumbs mb-4">

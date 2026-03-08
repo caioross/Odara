@@ -129,3 +129,49 @@
 .btn-full {
     width: 100%;
 }
+
+.item-quantity-controls {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.item-quantity-controls button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    color: var(--color-verde-intenso);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.item-quantity-controls button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.item-quantity-controls span {
+    width: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.cart-subtotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--color-verde-intenso);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 15px;
+}
+
+.subtotal-value {
+    color: var(--color-terracota);
+}
