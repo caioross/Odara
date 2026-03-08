@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Box, Users, ShoppingCart, TrendingUp, Edit, Trash2, Eye, ToggleLeft, ToggleRight, Filter, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Box, Users, ShoppingCart, TrendingUp, Edit, Trash2, Eye, ToggleLeft, ToggleRight, Filter, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import './Admin.css';
 
 export function AdminOverview() {
@@ -40,6 +40,24 @@ export function AdminOverview() {
     );
 }
 
+// Helper Generic Modal
+const AdminModal = ({ isOpen, onClose, title, children }: { isOpen: boolean, onClose: () => void, title: string, children: React.ReactNode }) => {
+    if (!isOpen) return null;
+    return (
+        <div className="admin-modal-overlay" onClick={onClose}>
+            <div className="admin-modal-content" onClick={e => e.stopPropagation()}>
+                <button className="admin-modal-close" onClick={onClose}><X size={24} /></button>
+                <div className="admin-modal-header">
+                    <h2>{title}</h2>
+                </div>
+                <div className="admin-modal-body">
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 interface AdminProduct {
     id: string;
     name: string;
@@ -76,6 +94,13 @@ export function ProductManagement() {
     const [filterCollection, setFilterCollection] = useState('');
     const [filterStock, setFilterStock] = useState('');
     const [filterIndustry, setFilterIndustry] = useState('');
+
+    // Modal State
+    const [modalConfig, setModalConfig] = useState<{ isOpen: boolean, mode: 'view' | 'edit', product: AdminProduct | null }>({ isOpen: false, mode: 'view', product: null });
+
+    const openModal = (product: AdminProduct, mode: 'view' | 'edit') => {
+        setModalConfig({ isOpen: true, mode, product });
+    };
 
     const handleSort = (key: keyof AdminProduct) => {
         let direction: 'asc' | 'desc' = 'asc';
@@ -212,8 +237,8 @@ export function ProductManagement() {
                                 <td>{formatCurrency(product.basePrice)}</td>
                                 <td className="text-center">{getStockBadge(product.stockStatus)}</td>
                                 <td className="admin-actions text-right">
-                                    <button className="action-btn" title="Visualizar"><Eye size={18} /></button>
-                                    <button className="action-btn" title="Editar"><Edit size={18} /></button>
+                                    <button className="action-btn" title="Visualizar" onClick={() => openModal(product, 'view')}><Eye size={18} /></button>
+                                    <button className="action-btn" title="Editar" onClick={() => openModal(product, 'edit')}><Edit size={18} /></button>
                                     <button className="action-btn" title="Excluir"><Trash2 size={18} /></button>
                                     <button className={`action-btn ${product.active ? 'active-toggle' : 'inactive-toggle'}`}
                                         onClick={() => toggleProductStatus(product.id)}
@@ -253,11 +278,82 @@ export function ProductManagement() {
                     </div>
                 </div>
             )}
+
+            {/* Product Modal */}
+            <AdminModal
+                isOpen={modalConfig.isOpen}
+                onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+                title={modalConfig.mode === 'edit' ? 'Editar Produto' : 'Detalhes do Produto'}
+            >
+                {modalConfig.product && (
+                    <div className="modal-grid-2">
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Nome do Produto</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.product.name}</p> : <input type="text" defaultValue={modalConfig.product.name} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>SKU (Código)</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.product.id}</p> : <input type="text" defaultValue={modalConfig.product.id} disabled />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Indústria</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.product.industry}</p> : (
+                                <select defaultValue={modalConfig.product.industry}>
+                                    <option>Odara Fábrica</option>
+                                    <option>Estúdio Mula</option>
+                                    <option>Sollos</option>
+                                    <option>Jacarandá</option>
+                                </select>
+                            )}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Coleção</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.product.collection}</p> : (
+                                <select defaultValue={modalConfig.product.collection}>
+                                    <option>Formas</option>
+                                    <option>Terra</option>
+                                    <option>Conforto</option>
+                                    <option>Essenciais</option>
+                                </select>
+                            )}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Preço Base (R$)</label>
+                            {modalConfig.mode === 'view' ? <p>{formatCurrency(modalConfig.product.basePrice)}</p> : <input type="number" defaultValue={modalConfig.product.basePrice} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Estoque Atual</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.product.stockQuantity} unid.</p> : <input type="number" defaultValue={modalConfig.product.stockQuantity} />}
+                        </div>
+                        <div className="modal-info-group readonly" style={{ gridColumn: '1 / -1' }}>
+                            <label>Status</label>
+                            <p>{modalConfig.product.active ? 'Ativo e visível na loja' : 'Desabilitado'}</p>
+                        </div>
+                        {modalConfig.mode === 'edit' && (
+                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '15px', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                <button className="btn btn-outline" onClick={() => setModalConfig({ ...modalConfig, isOpen: false })}>Cancelar</button>
+                                <button className="btn btn-primary" onClick={() => setModalConfig({ ...modalConfig, isOpen: false })}>Salvar Alterações</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </AdminModal>
         </div>
     );
 }
 
+const mockOrders = [
+    { id: '10045', client: 'Carlos Almeida', date: '08/03/2026', status: 'Aguardando Pagamento', total: 4200 },
+    { id: '10044', client: 'Marina Silva (Arquiteta)', date: '07/03/2026', status: 'Pago - Em Produção', total: 14500 }
+];
+
 export function OrdersManagement() {
+    const [modalConfig, setModalConfig] = useState<{ isOpen: boolean, order: any | null }>({ isOpen: false, order: null });
+
+    const openModal = (order: any) => {
+        setModalConfig({ isOpen: true, order });
+    };
+
     return (
         <div className="admin-section">
             <h2>Gerenciar Pedidos</h2>
@@ -273,28 +369,68 @@ export function OrdersManagement() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>10045</td>
-                            <td>Carlos Almeida</td>
-                            <td>08/03/2026</td>
-                            <td><span className="status-badge pending">Aguardando Pagamento</span></td>
-                            <td><button className="btn-link">Ver Detalhes</button></td>
-                        </tr>
-                        <tr>
-                            <td>10044</td>
-                            <td>Marina Silva (Arquiteta)</td>
-                            <td>07/03/2026</td>
-                            <td><span className="status-badge paid">Pago - Em Produção</span></td>
-                            <td><button className="btn-link">Ver Detalhes</button></td>
-                        </tr>
+                        {mockOrders.map(order => (
+                            <tr key={order.id}>
+                                <td>{order.id}</td>
+                                <td>{order.client}</td>
+                                <td>{order.date}</td>
+                                <td>
+                                    <span className={`status-badge ${order.status.includes('Pago') ? 'paid' : 'pending'}`}>
+                                        {order.status}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button className="btn-link" onClick={() => openModal(order)}>Ver Detalhes</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
+
+            <AdminModal
+                isOpen={modalConfig.isOpen}
+                onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+                title={`Detalhes do Pedido #${modalConfig.order?.id}`}
+            >
+                {modalConfig.order && (
+                    <div className="modal-grid-2">
+                        <div className="modal-info-group readonly">
+                            <label>Cliente</label>
+                            <p>{modalConfig.order.client}</p>
+                        </div>
+                        <div className="modal-info-group readonly">
+                            <label>Data da Compra</label>
+                            <p>{modalConfig.order.date}</p>
+                        </div>
+                        <div className="modal-info-group readonly">
+                            <label>Valor Total</label>
+                            <p>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(modalConfig.order.total)}</p>
+                        </div>
+                        <div className="modal-info-group readonly">
+                            <label>Status</label>
+                            <p>{modalConfig.order.status}</p>
+                        </div>
+                    </div>
+                )}
+            </AdminModal>
         </div>
     );
 }
 
+const mockCustomers = [
+    { id: 'C001', name: 'Marina Silva', email: 'marinasilva@email.com', profile: 'Arquiteta VIP', ltv: 142500, orders: 12, lastPurchase: '07/03/2026', status: 'approved' },
+    { id: 'C002', name: 'Carlos Almeida', email: 'carlos.alm@teste.com', profile: 'Consumidor Final', ltv: 4200, orders: 1, lastPurchase: '08/03/2026', status: 'approved' },
+    { id: 'C003', name: 'Ana Paula Design', email: 'ana@designstudio.com.br', profile: 'Aprovação Pendente (CAU)', ltv: 0, orders: 0, lastPurchase: '-', status: 'pending' }
+];
+
 export function AdminCustomers() {
+    const [modalConfig, setModalConfig] = useState<{ isOpen: boolean, mode: 'view' | 'edit', customer: any | null }>({ isOpen: false, mode: 'view', customer: null });
+
+    const openModal = (customer: any, mode: 'view' | 'edit') => {
+        setModalConfig({ isOpen: true, mode, customer });
+    };
+
     return (
         <div className="admin-section">
             <div className="admin-header-flex">
@@ -314,44 +450,94 @@ export function AdminCustomers() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Marina Silva</strong><br /><span className="text-small text-muted">marinasilva@email.com</span></td>
-                            <td><span className="status-badge" style={{ backgroundColor: '#e6f4ea', color: '#137333' }}>Arquiteta VIP</span><br /><span className="text-small">R$ 142.500,00 LTV</span></td>
-                            <td>12</td>
-                            <td>07/03/2026</td>
-                            <td className="admin-actions text-right">
-                                <button className="action-btn" title="Visualizar Perfil"><Eye size={18} /></button>
-                                <button className="action-btn" title="Editar"><Edit size={18} /></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Carlos Almeida</strong><br /><span className="text-small text-muted">carlos.alm@teste.com</span></td>
-                            <td>Consumidor Final<br /><span className="text-small">R$ 4.200,00 LTV</span></td>
-                            <td>1</td>
-                            <td>08/03/2026</td>
-                            <td className="admin-actions text-right">
-                                <button className="action-btn" title="Visualizar Perfil"><Eye size={18} /></button>
-                                <button className="action-btn" title="Editar"><Edit size={18} /></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Ana Paula Design</strong><br /><span className="text-small text-muted">ana@designstudio.com.br</span></td>
-                            <td><span className="status-badge pending">Aprovação Pendente (CAU)</span><br /><span className="text-small">R$ 0,00 LTV</span></td>
-                            <td>0</td>
-                            <td>-</td>
-                            <td className="admin-actions text-right">
-                                <button className="action-btn" title="Visualizar Perfil"><Eye size={18} /></button>
-                                <button className="action-btn" title="Aprovar Arquiteto"><ToggleRight size={20} color="#28a745" /></button>
-                            </td>
-                        </tr>
+                        {mockCustomers.map(customer => (
+                            <tr key={customer.id}>
+                                <td><strong>{customer.name}</strong><br /><span className="text-small text-muted">{customer.email}</span></td>
+                                <td>
+                                    {customer.status === 'pending' ? (
+                                        <span className="status-badge pending">{customer.profile}</span>
+                                    ) : (
+                                        <span className="status-badge" style={customer.profile.includes('VIP') ? { backgroundColor: '#e6f4ea', color: '#137333' } : {}}>{customer.profile}</span>
+                                    )}
+                                    <br /><span className="text-small">R$ {customer.ltv.toLocaleString('pt-BR')} LTV</span>
+                                </td>
+                                <td>{customer.orders}</td>
+                                <td>{customer.lastPurchase}</td>
+                                <td className="admin-actions text-right">
+                                    <button className="action-btn" title="Visualizar Perfil" onClick={() => openModal(customer, 'view')}><Eye size={18} /></button>
+                                    {customer.status === 'pending' ? (
+                                        <button className="action-btn" title="Aprovar Arquiteto"><ToggleRight size={20} color="#28a745" /></button>
+                                    ) : (
+                                        <button className="action-btn" title="Editar" onClick={() => openModal(customer, 'edit')}><Edit size={18} /></button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Customer Modal */}
+            <AdminModal
+                isOpen={modalConfig.isOpen}
+                onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+                title={modalConfig.mode === 'edit' ? 'Editar Cliente' : 'Perfil do Cliente'}
+            >
+                {modalConfig.customer && (
+                    <div className="modal-grid-2">
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Nome Completo</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.customer.name}</p> : <input type="text" defaultValue={modalConfig.customer.name} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>E-mail</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.customer.email}</p> : <input type="email" defaultValue={modalConfig.customer.email} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Perfil de Cliente</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.customer.profile}</p> : (
+                                <select defaultValue={modalConfig.customer.profile}>
+                                    <option>Consumidor Final</option>
+                                    <option>Arquiteto VIP</option>
+                                    <option>Aprovação Pendente (CAU)</option>
+                                    <option>Parceiro B2B</option>
+                                </select>
+                            )}
+                        </div>
+                        <div className="modal-info-group readonly">
+                            <label>Lifetime Value (LTV)</label>
+                            <p>R$ {modalConfig.customer.ltv.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                        </div>
+                        <div className="modal-info-group readonly">
+                            <label>Total de Pedidos</label>
+                            <p>{modalConfig.customer.orders} pedidos na loja</p>
+                        </div>
+
+                        {modalConfig.mode === 'edit' && (
+                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '15px', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                <button className="btn btn-outline" onClick={() => setModalConfig({ ...modalConfig, isOpen: false })}>Cancelar</button>
+                                <button className="btn btn-primary" onClick={() => setModalConfig({ ...modalConfig, isOpen: false })}>Salvar CRM</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </AdminModal>
         </div>
     );
 }
 
+const mockCoupons = [
+    { id: 'MK01', code: 'WELCOME10', rule: '10% OFF (Primeira Compra)', usage: '45', limit: 'Ilimitado', expiry: 'Sem validade', status: 'Ativo' },
+    { id: 'MK02', code: 'MOSTRA2026', rule: 'R$ 1.000 OFF nas cadeiras', usage: '2', limit: '50', expiry: '30/04/2026', status: 'Ativo' }
+];
+
 export function AdminMarketing() {
+    const [modalConfig, setModalConfig] = useState<{ isOpen: boolean, mode: 'view' | 'edit', coupon: any | null }>({ isOpen: false, mode: 'view', coupon: null });
+
+    const openModal = (coupon: any, mode: 'view' | 'edit') => {
+        setModalConfig({ isOpen: true, mode, coupon });
+    };
+
     return (
         <div className="admin-section">
             <div className="admin-header-flex">
@@ -384,26 +570,63 @@ export function AdminMarketing() {
                             <th>Uso</th>
                             <th>Validade</th>
                             <th>Status</th>
+                            <th className="text-right">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>WELCOME10</strong></td>
-                            <td>10% OFF (Primeira Compra)</td>
-                            <td>45 / Ilimitado</td>
-                            <td>Sem validade</td>
-                            <td><span className="stock-dot available" title="Ativo"></span> Ativo</td>
-                        </tr>
-                        <tr>
-                            <td><strong>MOSTRA2026</strong></td>
-                            <td>R$ 1.000 OFF nas cadeiras</td>
-                            <td>2 / 50</td>
-                            <td>30/04/2026</td>
-                            <td><span className="stock-dot available" title="Ativo"></span> Ativo</td>
-                        </tr>
+                        {mockCoupons.map(coupon => (
+                            <tr key={coupon.id}>
+                                <td><strong>{coupon.code}</strong></td>
+                                <td>{coupon.rule}</td>
+                                <td>{coupon.usage} / {coupon.limit}</td>
+                                <td>{coupon.expiry}</td>
+                                <td><span className={`stock-dot ${coupon.status === 'Ativo' ? 'available' : 'out'}`} title={coupon.status}></span> {coupon.status}</td>
+                                <td className="admin-actions text-right">
+                                    <button className="action-btn" title="Visualizar" onClick={() => openModal(coupon, 'view')}><Eye size={18} /></button>
+                                    <button className="action-btn" title="Editar" onClick={() => openModal(coupon, 'edit')}><Edit size={18} /></button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
+
+            <AdminModal
+                isOpen={modalConfig.isOpen}
+                onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+                title={modalConfig.mode === 'edit' ? 'Editar Cupom' : 'Detalhes do Cupom'}
+            >
+                {modalConfig.coupon && (
+                    <div className="modal-grid-2">
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Código do Cupom</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.coupon.code}</p> : <input type="text" defaultValue={modalConfig.coupon.code} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Regra do Desconto</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.coupon.rule}</p> : <input type="text" defaultValue={modalConfig.coupon.rule} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Limite de Uso</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.coupon.limit}</p> : <input type="text" defaultValue={modalConfig.coupon.limit} />}
+                        </div>
+                        <div className={`modal-info-group ${modalConfig.mode === 'view' ? 'readonly' : ''}`}>
+                            <label>Validade Exata</label>
+                            {modalConfig.mode === 'view' ? <p>{modalConfig.coupon.expiry}</p> : <input type="text" defaultValue={modalConfig.coupon.expiry} />}
+                        </div>
+                        <div className="modal-info-group readonly" style={{ gridColumn: '1 / -1' }}>
+                            <label>Uso Analítico Atual</label>
+                            <p>{modalConfig.coupon.usage} conversões realizadas com sucesso.</p>
+                        </div>
+                        {modalConfig.mode === 'edit' && (
+                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '15px', justifyContent: 'flex-end', marginTop: '10px' }}>
+                                <button className="btn btn-outline" onClick={() => setModalConfig({ ...modalConfig, isOpen: false })}>Cancelar</button>
+                                <button className="btn btn-primary" onClick={() => setModalConfig({ ...modalConfig, isOpen: false })}>Salvar Cupom</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </AdminModal>
         </div>
     );
 }
