@@ -23,6 +23,7 @@ function App() {
           <Route path="/produtos/:id" element={<ProductDetails />} />
           <Route path="/mostras" element={<Mostras />} />
           <Route path="/brasil-criativo" element={<BrasilCriativo />} />
+          <Route path="/dna-odara" element={<DnaOdara />} />
         </Routes>
       </main>
 

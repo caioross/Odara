@@ -1,0 +1,179 @@
+.dna-odara-page {
+    width: 100%;
+}
+
+.dna-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--color-off-white);
+}
+
+.dna-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.dna-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dna-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(6, 48, 48, 0.4), rgba(6, 48, 48, 0.8));
+}
+
+.dna-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.dna-hero-content h1 {
+    font-size: 5rem;
+    margin-bottom: 20px;
+}
+
+.dna-hero-content p {
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.dna-concept-section {
+    padding: 100px 20px;
+}
+
+.dna-concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.dna-concept-text h2 {
+    font-size: 2.8rem;
+    color: var(--color-verde-intenso);
+    margin-bottom: 30px;
+}
+
+.dna-concept-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.mask-alt {
+    clip-path: polygon(0 10%, 100% 0, 90% 90%, 10% 100%);
+    border-radius: 40px 100px 40px 100px;
+}
+
+.dna-integration-section {
+    background-color: var(--color-off-white);
+    padding: 100px 20px;
+}
+
+.dna-integration-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.dna-integration-header h2 {
+    font-size: 2.8rem;
+    color: var(--color-verde-intenso);
+    margin-bottom: 20px;
+}
+
+.dna-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 300px;
+    gap: 20px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.row-span-2 {
+    grid-row: span 2;
+}
+
+.col-span-2 {
+    grid-column: span 2;
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 20px 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 992px) {
+    .dna-concept-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .dna-concept-image {
+        order: -1;
+    }
+
+    .dna-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dna-hero-content h1 {
+        font-size: 3.5rem;
+    }
+
+    .dna-gallery-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 250px;
+    }
+
+    .row-span-2,
+    .col-span-2 {
+        grid-row: auto;
+        grid-column: auto;
+    }
+}

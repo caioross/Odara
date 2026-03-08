@@ -8,6 +8,7 @@ export default function Header({ onOpenCart }) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+    const [hoveredCategory, setHoveredCategory] = useState('destaque');
     const { totalItems } = useCart();
 
     useEffect(() => {
@@ -46,33 +47,39 @@ export default function Header({ onOpenCart }) {
 
                             {/* Mega Menu */}
                             {isMegaMenuOpen && (
-                                <div className="mega-menu">
+                                <div className="mega-menu" onMouseLeave={() => setHoveredCategory('destaque')}>
                                     <div className="mega-menu-content container">
                                         <div className="mega-column">
                                             <h3>Assentos</h3>
-                                            <Link to="/produtos?categoria=sofa">Sofás</Link>
-                                            <Link to="/produtos?categoria=cadeira">Cadeiras</Link>
-                                            <Link to="/produtos?categoria=poltrona">Poltronas</Link>
-                                            <Link to="/produtos?categoria=banqueta">Banquetas</Link>
-                                            <Link to="/produtos?categoria=banco">Bancos</Link>
+                                            <Link to="/produtos?categoria=sofa" onMouseEnter={() => setHoveredCategory('sofa')}>Sofás</Link>
+                                            <Link to="/produtos?categoria=cadeira" onMouseEnter={() => setHoveredCategory('cadeira')}>Cadeiras</Link>
+                                            <Link to="/produtos?categoria=poltrona" onMouseEnter={() => setHoveredCategory('poltrona')}>Poltronas</Link>
+                                            <Link to="/produtos?categoria=banqueta" onMouseEnter={() => setHoveredCategory('banqueta')}>Banquetas</Link>
+                                            <Link to="/produtos?categoria=banco" onMouseEnter={() => setHoveredCategory('banco')}>Bancos</Link>
                                         </div>
                                         <div className="mega-column">
                                             <h3>Superfícies</h3>
-                                            <Link to="/produtos?categoria=mesa-jantar">Mesas de Jantar</Link>
-                                            <Link to="/produtos?categoria=mesa-centro">Mesas de Centro</Link>
-                                            <Link to="/produtos?categoria=mesa-lateral">Mesas Laterais</Link>
-                                            <Link to="/produtos?categoria=escrivaninha">Escrivaninhas</Link>
+                                            <Link to="/produtos?categoria=mesa-jantar" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas de Jantar</Link>
+                                            <Link to="/produtos?categoria=mesa-centro" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas de Centro</Link>
+                                            <Link to="/produtos?categoria=mesa-lateral" onMouseEnter={() => setHoveredCategory('mesa')}>Mesas Laterais</Link>
+                                            <Link to="/produtos?categoria=escrivaninha" onMouseEnter={() => setHoveredCategory('mesa')}>Escrivaninhas</Link>
                                         </div>
                                         <div className="mega-column">
                                             <h3>Armazenamento</h3>
-                                            <Link to="/produtos?categoria=rack">Racks</Link>
-                                            <Link to="/produtos?categoria=aparador">Aparadores</Link>
-                                            <Link to="/produtos?categoria=buffet">Buffets</Link>
+                                            <Link to="/produtos?categoria=rack" onMouseEnter={() => setHoveredCategory('rack')}>Racks</Link>
+                                            <Link to="/produtos?categoria=aparador" onMouseEnter={() => setHoveredCategory('aparador')}>Aparadores</Link>
+                                            <Link to="/produtos?categoria=buffet" onMouseEnter={() => setHoveredCategory('aparador')}>Buffets</Link>
                                         </div>
                                         <div className="mega-column featured">
-                                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=400" alt="Destaque" />
-                                            <h4>Coleção Orgânica</h4>
-                                            <Link to="/produtos?colecao=organica" className="btn-link">Ver Coleção</Link>
+                                            {hoveredCategory === 'sofa' && <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=400" alt="Sofá em destaque" />}
+                                            {hoveredCategory === 'cadeira' && <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&q=80&w=400" alt="Cadeira em destaque" />}
+                                            {hoveredCategory === 'poltrona' && <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=400" alt="Poltrona em destaque" />}
+                                            {hoveredCategory === 'rack' && <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&q=80&w=400" alt="Rack em destaque" />}
+                                            {hoveredCategory === 'mesa' && <img src="https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&q=80&w=400" alt="Mesa em destaque" />}
+                                            {hoveredCategory === 'destaque' && <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=400" alt="Destaque Odara" />}
+                                            {(hoveredCategory !== 'sofa' && hoveredCategory !== 'cadeira' && hoveredCategory !== 'poltrona' && hoveredCategory !== 'rack' && hoveredCategory !== 'mesa' && hoveredCategory !== 'destaque') && (
+                                                <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=400" alt="Destaque Odara" />
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +92,7 @@ export default function Header({ onOpenCart }) {
                             <Link to="/brasil-criativo" className="nav-link">Brasil Criativo</Link>
                         </li>
                         <li className="nav-item">
-                            <a href="https://3dwarehouse.sketchup.com/org/dfd6b8e9-2ed0-4d9c-a771-41466c457cf8/Odara" target="_blank" rel="noopener noreferrer" className="nav-link">3D Warehouse</a>
+                            <Link to="/produtos?pronta-entrega=true" className="nav-link pronta-entrega" style={{ color: 'var(--color-terracota)', fontWeight: 'bold' }}>Pronta Entrega</Link>
                         </li>
                     </ul>
                 </nav>

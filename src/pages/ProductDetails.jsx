@@ -128,16 +128,33 @@ export default function ProductDetails() {
                             </button>
                         </div>
 
-                        {/* External Links */}
-                        <div className="product-links mt-4">
+                        {/* Blueprints / Technical Drawings */}
+                        <div className="product-blueprints mt-4">
+                            <h3>Modulação & Vistas Técnicas</h3>
+                            <div className="blueprint-grid">
+                                <div className="blueprint-item">
+                                    <img src="https://images.unsplash.com/photo-1615876023263-8dc9e5f1f91d?auto=format&fit=crop&q=80&w=300" alt="Vista Superior" style={{ filter: 'grayscale(100%)', opacity: 0.7 }} />
+                                    <span>Vista Superior</span>
+                                </div>
+                                <div className="blueprint-item">
+                                    <img src="https://images.unsplash.com/photo-1600210491369-e753d80a41f3?auto=format&fit=crop&q=80&w=300" alt="Vista Lateral" style={{ filter: 'grayscale(100%)', opacity: 0.7 }} />
+                                    <span>Vista Lateral</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* External Links (Icons Only) */}
+                        <div className="product-links mt-4 icon-links">
                             {product.warehouseUrl && (
-                                <a href={product.warehouseUrl} target="_blank" rel="noopener noreferrer" className="external-btn">
-                                    <Box size={20} /> Ver Modelo 3D (3D Warehouse) <ExternalLink size={16} />
+                                <a href={product.warehouseUrl} target="_blank" rel="noopener noreferrer" className="icon-action-btn" title="Ver no SketchUp 3D Warehouse">
+                                    <Box size={24} />
                                 </a>
                             )}
-                            {/* Added DWG mockup link since customer requested it */}
-                            <a href="#" onClick={(e) => { e.preventDefault(); alert('Download do arquivo DWG iniciado.'); }} className="external-btn mt-2">
-                                <Download size={20} /> Baixar Arquivo em DWG <ExternalLink size={16} />
+                            <a href="https://kazoka.com.br" target="_blank" rel="noopener noreferrer" className="icon-action-btn kazoka-icon" title="Ver no Kazoka">
+                                <span style={{ fontWeight: 'bold', fontSize: '18px' }}>K</span>
+                            </a>
+                            <a href="#" onClick={(e) => { e.preventDefault(); alert('Download do arquivo DWG iniciado.'); }} className="icon-action-btn" title="Baixar Arquivo em DWG">
+                                <Download size={24} />
                             </a>
                         </div>
 

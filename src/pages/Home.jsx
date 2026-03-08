@@ -43,49 +43,51 @@ export default function Home() {
                             </div>
                         </div>
                         <div className="concept-text">
-                            <h2>Curadoria de Excelência</h2>
+                            <h2>O DNA Odara</h2>
                             <p>
                                 A Odara transcende o mobiliário; é uma celebração das raízes brasileiras através do design de alto padrão.
-                                Nossas peças são mais do que móveis, são esculturas funcionais concebidas com matérias-primas nobres e um cuidado artesanal que reflete o verdadeiro luxo.
+                                O nosso DNA é composto por curadoria apurada, design limpo, valorização de materiais
+                                naturais e a celebração do design autoral brasileiro. Entenda como nossas peças
+                                se integram ao seu ambiente.
                             </p>
-                            <Link to="/mostras" className="btn-link with-arrow">
-                                Conheça Nossas Mostras <ArrowRight size={16} />
+                            <Link to="/dna-odara" className="btn-link with-arrow">
+                                Conheça nosso DNA <ArrowRight size={16} />
                             </Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Featured Categories */}
+            {/* Featured Environments */}
             <section className="featured-categories section-padding bg-light">
                 <div className="container text-center">
-                    <h2 className="section-title">Nossas Categorias</h2>
-                    <p className="section-subtitle">Descubra peças de assinatura que transformarão sua casa.</p>
+                    <h2 className="section-title">Ambientes</h2>
+                    <p className="section-subtitle">Encontre a inspiração perfeita para cada espaço do seu projeto.</p>
 
                     <div className="categories-grid mt-4">
-                        <Link to="/produtos?categoria=assentos" className="category-card">
+                        <Link to="/produtos?ambiente=sala-estar" className="category-card">
                             <div className="category-image">
-                                <img src="https://images.unsplash.com/photo-1540574163026-643ea20d25b5?auto=format&fit=crop&q=80&w=600" alt="Assentos" />
+                                <img src="https://images.unsplash.com/photo-1600210491369-e753d80a41f3?auto=format&fit=crop&q=80&w=600" alt="Sala de Estar" />
                                 <div className="category-overlay">
-                                    <h3>Assentos</h3>
+                                    <h3>Sala de Estar</h3>
                                 </div>
                             </div>
                         </Link>
 
-                        <Link to="/produtos?categoria=superficies" className="category-card">
+                        <Link to="/produtos?ambiente=sala-jantar" className="category-card">
                             <div className="category-image">
-                                <img src="https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&q=80&w=600" alt="Superfícies" />
+                                <img src="https://images.unsplash.com/photo-1617255140683-de017bd68b5a?auto=format&fit=crop&q=80&w=600" alt="Sala de Jantar" />
                                 <div className="category-overlay">
-                                    <h3>Superfícies</h3>
+                                    <h3>Sala de Jantar</h3>
                                 </div>
                             </div>
                         </Link>
 
-                        <Link to="/produtos?categoria=armazenamento" className="category-card">
+                        <Link to="/produtos?ambiente=varanda" className="category-card">
                             <div className="category-image">
-                                <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&q=80&w=600" alt="Armazenamento" />
+                                <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&q=80&w=600" alt="Varanda" />
                                 <div className="category-overlay">
-                                    <h3>Armazenamento</h3>
+                                    <h3>Varanda</h3>
                                 </div>
                             </div>
                         </Link>

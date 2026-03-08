@@ -40,7 +40,7 @@ export default function Mostras() {
                             <div className="mostra-info">
                                 <h2>{mostra.title}</h2>
                                 <p>{mostra.description}</p>
-                                <button className="btn btn-outline mt-4">Ver Galeria Completa</button>
+                                <a href="https://instagram.com/odara" target="_blank" rel="noopener noreferrer" className="btn btn-outline mt-4">Ver no Instagram</a>
                             </div>
                         </div>
                     ))}
