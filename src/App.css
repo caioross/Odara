@@ -1,0 +1,16 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding-top: var(--header-height);
+  /* Ensure content is below fixed header */
+}
+
+/* Base page transition animation */
+.page {
+  width: 100%;
+}

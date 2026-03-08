@@ -1,0 +1,221 @@
+.product-details-page {
+    background-color: var(--color-off-white);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-verde-medio);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.back-link:hover {
+    color: var(--color-terracota);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* Gallery */
+.product-gallery {
+    position: sticky;
+    top: calc(var(--header-height) + 40px);
+}
+
+.main-image {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    aspect-ratio: 4/5;
+}
+
+.main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.thumbnail-btn {
+    width: 80px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    padding: 0;
+}
+
+.thumbnail-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-btn.active {
+    border-color: var(--color-terracota);
+}
+
+/* Info Panel */
+.product-info-panel {
+    padding-top: 20px;
+}
+
+.collection-tag {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--color-terracota);
+    margin-bottom: 12px;
+}
+
+.product-title {
+    font-family: var(--font-heading);
+    font-size: 40px;
+    color: var(--color-verde-intenso);
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.product-price {
+    font-size: 20px;
+    color: var(--color-verde-medio);
+    margin-bottom: 30px;
+}
+
+.product-description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--color-verde-medio);
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.option-group {
+    margin-bottom: 30px;
+}
+
+.option-group h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-verde-intenso);
+    font-family: var(--font-body);
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.finishes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.finish-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--color-verde-medio);
+    color: var(--color-verde-medio);
+    border-radius: 2px;
+    font-size: 14px;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.finish-btn:hover {
+    border-color: var(--color-verde-intenso);
+    color: var(--color-verde-intenso);
+}
+
+.finish-btn.active {
+    background-color: var(--color-verde-intenso);
+    color: var(--color-off-white);
+    border-color: var(--color-verde-intenso);
+}
+
+.swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.swatch-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-verde-medio);
+}
+
+.swatch-color {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dimensions {
+    font-size: 16px;
+    color: var(--color-verde-medio);
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.external-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--color-verde-intenso);
+    color: var(--color-verde-intenso);
+    text-decoration: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.external-btn:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    color: var(--color-terracota);
+    border-color: var(--color-terracota);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .product-gallery {
+        position: relative;
+        top: 0;
+    }
+}

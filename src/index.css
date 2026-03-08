@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@300;400;700&display=swap');
+
+/* Fallback for Meganté, using Playfair Display or similar elegant serif as fallback if Muli is the main, Meganté is a custom font, typically needs @font-face, but we'll use a standard serif or similar from Google Fonts as placeholder like 'Playfair Display' if we don't have the webfont file. */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  --color-verde-intenso: #063030;
+  --color-off-white: #F8EFED;
+  --color-verde-claro: #5EB49A;
+  --color-verde-medio: #375B56;
+  --color-rose: #E5C1BA;
+  --color-terracota: #CDA07C;
+
+  /* Typography */
+  --font-heading: 'Meganté', 'Playfair Display', serif;
+  --font-body: 'Muli', 'Mulish', sans-serif; /* Google Fonts renamed Muli to Mulish */
+
+  /* General */
+  --header-height: 80px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-off-white);
+  color: var(--color-verde-intenso);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: normal;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Utilities */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.text-center { text-align: center; }
+.mt-4 { margin-top: 2rem; }
+.mb-4 { margin-bottom: 2rem; }
+.py-5 { padding-top: 4rem; padding-bottom: 4rem; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.btn-primary {
+  background-color: var(--color-terracota);
+  color: var(--color-off-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-verde-intenso);
+}
+
+.btn-outline {
+  border: 1px solid var(--color-verde-intenso);
+  color: var(--color-verde-intenso);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-verde-intenso);
+  color: var(--color-off-white);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
